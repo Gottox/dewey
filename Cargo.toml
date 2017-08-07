@@ -1,0 +1,8 @@
+[package]
+name = "dewey"
+version = "0.1.0"
+authors = ["Enno Boland <g@s01.de>"]
+
+[dependencies]
+static_map = "*"
+static_map_macros = "*"
