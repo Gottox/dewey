@@ -46,6 +46,7 @@ static MODIFIERS: Map<&'static str, Component> = static_map! {
 
 pub struct Version {
   components: Vec<Component>,
+  version: String,
 }
 
 impl Version {
@@ -93,7 +94,13 @@ impl Version {
 
       chunk = right;
     }
-    Ok(Version { components: components })
+    Ok(Version {
+         version: version.to_string(),
+         components: components,
+       })
+  }
+  pub fn as_str(&self) -> &str {
+    self.version.as_str()
   }
 }
 
