@@ -58,7 +58,7 @@ pub struct Version {
 impl Version {
   /// Returns a Result containing either a Version representation of the
   /// string or - if unparsable - an Err instance.
-  pub fn new(version: &str) -> Result<Version, &'static str> {
+  pub fn from_str(version: &str) -> Result<Version, &'static str> {
     let chunkstr = version.to_lowercase();
     let mut chunk = chunkstr.as_str();
     let mut components = Vec::new();
@@ -157,45 +157,45 @@ impl PartialOrd for Version {
 
 #[test]
 fn parse_simple_number() {
-  let v = Version::new("1").ok().unwrap();
+  let v = Version::from_str("1").ok().unwrap();
   assert_eq!(v.components[0].v, 1);
 }
 
 #[test]
 fn compare_letters() {
-  assert!(Version::new("A") == Version::new("a"));
-  assert!(Version::new("a") < Version::new("b"));
-  assert!(Version::new("aa") < Version::new("b"));
+  assert!(Version::from_str("A") == Version::from_str("a"));
+  assert!(Version::from_str("a") < Version::from_str("b"));
+  assert!(Version::from_str("aa") < Version::from_str("b"));
 }
 
 #[test]
 fn compare_equivalent() {
-  assert!(Version::new("1") == Version::new("1"));
-  assert!(Version::new("1") == Version::new("1.0"));
-  assert!(Version::new("1") == Version::new("1pl0"));
+  assert!(Version::from_str("1") == Version::from_str("1"));
+  assert!(Version::from_str("1") == Version::from_str("1.0"));
+  assert!(Version::from_str("1") == Version::from_str("1pl0"));
 }
 
 #[test]
 fn compare_smaller() {
-  assert!(Version::new("1") > Version::new("0"));
-  assert!(Version::new("1") > Version::new("0.0.1"));
-  assert!(Version::new("1") > Version::new("1pre1"));
-  assert!(Version::new("1") > Version::new("1rc1"));
-  assert!(Version::new("1") > Version::new("1alpha"));
-  assert!(Version::new("1") > Version::new("1alpha1"));
-  assert!(Version::new("1") > Version::new("1beta1"));
+  assert!(Version::from_str("1") > Version::from_str("0"));
+  assert!(Version::from_str("1") > Version::from_str("0.0.1"));
+  assert!(Version::from_str("1") > Version::from_str("1pre1"));
+  assert!(Version::from_str("1") > Version::from_str("1rc1"));
+  assert!(Version::from_str("1") > Version::from_str("1alpha"));
+  assert!(Version::from_str("1") > Version::from_str("1alpha1"));
+  assert!(Version::from_str("1") > Version::from_str("1beta1"));
 }
 
 #[test]
 fn compare_greater() {
-  assert!(Version::new("1") < Version::new("2"));
-  assert!(Version::new("1") < Version::new("1.1"));
-  assert!(Version::new("1") < Version::new("1pl1"));
+  assert!(Version::from_str("1") < Version::from_str("2"));
+  assert!(Version::from_str("1") < Version::from_str("1.1"));
+  assert!(Version::from_str("1") < Version::from_str("1pl1"));
 }
 
 #[test]
 fn compare_invalid() {
-  assert!(Version::new("1a")
-            .partial_cmp(&Version::new("1.0"))
+  assert!(Version::from_str("1a")
+            .partial_cmp(&Version::from_str("1.0"))
             .is_none());
 }
