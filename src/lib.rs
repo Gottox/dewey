@@ -1,3 +1,8 @@
+//! This crate parses version strings using the dewey standard that is used in
+//! NetBSD and Void Linux.
+
+#![warn(missing_docs)]
+
 #[macro_use]
 extern crate static_map;
 #[macro_use]
@@ -44,12 +49,15 @@ static MODIFIERS: Map<&'static str, Component> = static_map! {
     "." => Component{t:ComponentType::Dot, v:0}
 };
 
+/// An abstract definition of a version definition.
 pub struct Version {
   components: Vec<Component>,
   version: String,
 }
 
 impl Version {
+  /// Returns a Result containing either a Version representation of the
+  /// string or - if unparsable - an Err instance.
   pub fn new(version: &str) -> Result<Version, &'static str> {
     let chunkstr = version.to_lowercase();
     let mut chunk = chunkstr.as_str();
@@ -99,6 +107,8 @@ impl Version {
          components: components,
        })
   }
+
+  /// Extracts a string slice containing the the original version number
   pub fn as_str(&self) -> &str {
     self.version.as_str()
   }
