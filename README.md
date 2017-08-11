@@ -7,7 +7,7 @@ comperator implementation.
 `dewey` not only parses `.`-seperated versions but other common patterns such
 as `X.XalphaX`, `X.XrcX`, and `X.X.Xpl1`
 
-## Example:
+## example
 
 ```rust
 let stable = Version::from_str("1.0");
@@ -18,7 +18,7 @@ assert!(pl > stable);
 assert!(pl > pre);
 ```
 
-## Supported Seperators
+## supported seperators
 
 * Revision: example: `1.0_1`
 * Alpha: `0.0alpha1`
