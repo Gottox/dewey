@@ -1,7 +1,8 @@
 [package]
 name = "dewey"
-version = "0.1.0"
-authors = ["Enno Boland <g@s01.de>"]
+version = "0.1.1"
+authors = ["Enno Boland <gottox@voidlinux.eu>"]
+repository = "https://github.com/Gottox/dewey"
 description = "version parser and comparator that works with non-semantic versions"
 documentation = "https://docs.rs/dewey"
 readme = "README.md"
