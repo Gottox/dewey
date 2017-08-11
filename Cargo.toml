@@ -2,7 +2,13 @@
 name = "dewey"
 version = "0.1.0"
 authors = ["Enno Boland <g@s01.de>"]
+description = "version parser and comparator that works with non-semantic versions"
+documentation = "https://docs.rs/dewey"
+readme = "README.md"
+keywords = [ "version", "compare" ]
+categories = [ "parsing" ]
+license = "MIT"
 
 [dependencies]
-static_map = "*"
-static_map_macros = "*"
+static_map = "0.1.1"
+static_map_macros = "0.1.1"
