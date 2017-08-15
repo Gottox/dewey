@@ -11,6 +11,7 @@ extern crate static_map_macros;
 use static_map::Map;
 use std::cmp::Ordering;
 use std::ascii::AsciiExt;
+use std::str::FromStr;
 
 #[derive(Copy, Clone, PartialEq, Debug)]
 enum ComponentType {
@@ -26,7 +27,7 @@ enum ComponentType {
   Unknown,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Component {
   t: ComponentType,
   v: i64,
@@ -50,15 +51,16 @@ static MODIFIERS: Map<&'static str, Component> = static_map! {
 };
 
 /// An abstract definition of a version definition.
+#[derive(Debug)]
 pub struct Version {
   components: Vec<Component>,
   version: String,
 }
 
-impl Version {
-  /// Returns a Result containing either a Version representation of the
-  /// string or - if unparsable - an Err instance.
-  pub fn from_str(version: &str) -> Result<Version, &'static str> {
+impl FromStr for Version {
+  type Err = &'static str;
+
+  fn from_str(version: &str) -> Result<Self, Self::Err> {
     let chunkstr = version.to_lowercase();
     let mut chunk = chunkstr.as_str();
     let mut components = Vec::new();
@@ -107,10 +109,11 @@ impl Version {
          components: components,
        })
   }
+}
 
-  /// Extracts a string slice containing the the original version number
-  pub fn as_str(&self) -> &str {
-    self.version.as_str()
+impl ToString for Version {
+  fn to_string(&self) -> String {
+    self.version.clone()
   }
 }
 
@@ -163,39 +166,42 @@ fn parse_simple_number() {
 
 #[test]
 fn compare_letters() {
-  assert!(Version::from_str("A") == Version::from_str("a"));
-  assert!(Version::from_str("a") < Version::from_str("b"));
-  assert!(Version::from_str("aa") < Version::from_str("b"));
+  assert!("A".parse::<Version>() == "a".parse::<Version>());
+
+  assert!("A".parse::<Version>() == "a".parse::<Version>());
+  assert!("a".parse::<Version>() < "b".parse::<Version>());
+  assert!("aa".parse::<Version>() < "b".parse::<Version>());
 }
 
 #[test]
 fn compare_equivalent() {
-  assert!(Version::from_str("1") == Version::from_str("1"));
-  assert!(Version::from_str("1") == Version::from_str("1.0"));
-  assert!(Version::from_str("1") == Version::from_str("1pl0"));
+  assert!("1".parse::<Version>() == "1".parse::<Version>());
+  assert!("1".parse::<Version>() == "1.0".parse::<Version>());
+  assert!("1".parse::<Version>() == "1pl0".parse::<Version>());
 }
 
 #[test]
 fn compare_smaller() {
-  assert!(Version::from_str("1") > Version::from_str("0"));
-  assert!(Version::from_str("1") > Version::from_str("0.0.1"));
-  assert!(Version::from_str("1") > Version::from_str("1pre1"));
-  assert!(Version::from_str("1") > Version::from_str("1rc1"));
-  assert!(Version::from_str("1") > Version::from_str("1alpha"));
-  assert!(Version::from_str("1") > Version::from_str("1alpha1"));
-  assert!(Version::from_str("1") > Version::from_str("1beta1"));
+  assert!("1".parse::<Version>() > "0".parse::<Version>());
+  assert!("1".parse::<Version>() > "0.0.1".parse::<Version>());
+  assert!("1".parse::<Version>() > "1pre1".parse::<Version>());
+  assert!("1".parse::<Version>() > "1rc1".parse::<Version>());
+  assert!("1".parse::<Version>() > "1alpha".parse::<Version>());
+  assert!("1".parse::<Version>() > "1alpha1".parse::<Version>());
+  assert!("1".parse::<Version>() > "1beta1".parse::<Version>());
 }
 
 #[test]
 fn compare_greater() {
-  assert!(Version::from_str("1") < Version::from_str("2"));
-  assert!(Version::from_str("1") < Version::from_str("1.1"));
-  assert!(Version::from_str("1") < Version::from_str("1pl1"));
+  assert!("1".parse::<Version>() < "2".parse::<Version>());
+  assert!("1".parse::<Version>() < "1.1".parse::<Version>());
+  assert!("1".parse::<Version>() < "1pl1".parse::<Version>());
 }
 
 #[test]
 fn compare_invalid() {
-  assert!(Version::from_str("1a")
-            .partial_cmp(&Version::from_str("1.0"))
+  assert!("1a"
+            .parse::<Version>()
+            .partial_cmp(&"1.0".parse::<Version>())
             .is_none());
 }
