@@ -10,9 +10,9 @@ as `X.XalphaX`, `X.XrcX`, and `X.X.Xpl1`
 ## example
 
 ```rust
-let stable = Version::from_str("1.0");
-let pre = Version::from_str("1.0pre1")
-let pl = Version::from_str("1.0pl1")
+let stable = "1.0".version();
+let pre = "1.0pre1".version()
+let pl = "1.0pl1".version();
 assert!(stable > pre);
 assert!(pl > stable);
 assert!(pl > pre);
