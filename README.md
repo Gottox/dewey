@@ -10,8 +10,10 @@ as `X.XalphaX`, `X.XrcX`, and `X.X.Xpl1`
 ## example
 
 ```rust
+use dewey::VersionCmp;
+
 let stable = "1.0".version();
-let pre = "1.0pre1".version()
+let pre = "1.0pre1".version();
 let pl = "1.0pl1".version();
 assert!(stable > pre);
 assert!(pl > stable);
@@ -27,3 +29,28 @@ assert!(pl > pre);
 * Rc: `0.0rc1`
 * PatchLevel: `0.0pl1`
 * Dot: `1.0`
+
+## version coverage
+
+`dewey` tries its very best to produce a relationship between two version.
+
+It even can work with rather obscure utf8 versioning:
+
+```rust
+use dewey::VersionCmp;
+
+let smile = "1.😃".version();
+let sad = "1.😢".version();
+assert!(smile < sad);
+```
+
+It only fails if there are there are conflicting version schemes:
+
+```rust
+use dewey::VersionCmp;
+
+let alpha_suffix = "1c".version();
+let number_suffix = "1.0".version();
+assert!(alpha_suffix.partial_cmp(&number_suffix) == None);
+```
+

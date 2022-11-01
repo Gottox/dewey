@@ -9,5 +9,4 @@ readme = "README.md"
 keywords = [ "version", "compare" ]
 categories = [ "parsing" ]
 license = "MIT"
-
-[dependencies]
+edition = "2021"
