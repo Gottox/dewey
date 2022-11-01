@@ -1,6 +1,6 @@
 [package]
 name = "dewey"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Enno Boland <gottox@voidlinux.eu>"]
 repository = "https://github.com/Gottox/dewey"
 description = "version parser and comparator that works with non-semantic versions"
